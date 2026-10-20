@@ -114,7 +114,7 @@ hl.config({
 		},
 
 		-- Set to true to enable resizing windows by clicking and dragging on borders and gaps
-		resize_on_border = false,
+		resize_on_border = true,
 
 		-- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
 		allow_tearing = false,
@@ -273,8 +273,8 @@ hl.device({
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
-hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
+-- hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
+-- local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
 hl.bind(
 	mainMod .. " + M",
@@ -283,6 +283,12 @@ hl.bind(
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+-- HyDE's rofi app finder: move from SUPER + A to SUPER + space
+hl.unbind(hyde.binds.normalize(mainMod .. " + A"))
+hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(hyde.sh.menu.apps()), { description = "[Launcher|Rofi menus] application finder" })
+hl.unbind(hyde.binds.normalize(mainMod .. " + Q"))
+hl.unbind(hyde.binds.normalize(mainMod .. " + C"))
+hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 
@@ -390,4 +396,12 @@ hl.window_rule({
 
 	move = "20 monitor_h-120",
 	float = true,
+})
+
+hl.window_rule({
+	name = "1password-float",
+	match = { 
+		class = "com.onepassword.OnePassword"
+	},
+	float = true
 })
